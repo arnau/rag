@@ -63,7 +63,7 @@ module Rag
           }
         }
       }
-      RestClient.get("http://localhost:9200/asiches/bookmarks/_search", data) do |response, request, result, &block|
+      RestClient.post("http://localhost:9200/asiches/bookmarks/_search", data.to_json) do |response, request, result, &block|
         #puts response.body, response.code
         data = JSON.parse(response.body)['hits']['hits'].map { |i| i['_source'] }
         data.each do |item|
@@ -78,6 +78,7 @@ module Rag
             i
           end
           print_table(item, :indent => 2)
+          say("Total: #{data.size}", :red)
           say("\n")
         end
       end
