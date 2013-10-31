@@ -54,6 +54,35 @@ module Rag
       end
     end
 
+    desc 'search', 'foo'
+    def search(query)
+      data = {
+        query: {
+          match: {
+            keyword: query
+          }
+        }
+      }
+      RestClient.get("http://localhost:9200/asiches/bookmarks/_search", data) do |response, request, result, &block|
+        #puts response.body, response.code
+        data = JSON.parse(response.body)['hits']['hits'].map { |i| i['_source'] }
+        data.each do |item|
+          item.delete('@context')
+          item.delete('@type')
+          item.delete('@id')
+          say(('-' * 80), :yellow)
+          item = item.to_a.map do |i|
+            i[1] = i[1].map { |k| "\n#{(' ' * 14)}#{set_color('-', :black)} #{k}"}.join("") if i[1].respond_to? :join
+            i[1] = set_color(i[1], :yellow, :bold) if i[0] == 'source'
+            i[0] = set_color(i[0], :green)
+            i
+          end
+          print_table(item, :indent => 2)
+          say("\n")
+        end
+      end
+    end
+
     desc 'exists', 'foo'
     def exists(id)
       RestClient.get("http://localhost:9200/asiches/bookmarks/#{id}") do |response, request, result, &block|
