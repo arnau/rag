@@ -1,7 +1,10 @@
 #!/usr/bin/env ruby
 # encoding: UTF-8
-#require 'ensure/encoding'
-$:.unshift File.expand_path(File.join File.dirname(__FILE__), '..', 'lib')
+
+# this shit is gonna bit me :(
+$:.unshift File.expand_path('/var/kitchen/bookmarks/lib')
+#$:.unshift File.expand_path(File.join File.dirname(__FILE__), '..', 'lib')
+
 require 'rag'
 require 'rag/cli'
 
