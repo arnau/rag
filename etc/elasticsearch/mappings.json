@@ -1,0 +1,44 @@
+{
+  "bookmarks": {
+    "_analyzer": {
+      "path": "language"
+    },
+    "properties": {
+      "@id": {
+        "type": "string",
+        "index": "no"
+      },
+      "@type": {
+        "type": "string",
+        "index_name": "type",
+        "store": "yes",
+        "index": "not_analyzed"
+      },
+      "identifier": {
+        "type": "string",
+        "index": "no"
+      },
+      "language": {
+        "type": "string",
+        "store": "yes",
+        "index": "not_analyzed"
+      },
+      "created": {
+        "type": "date"
+      },
+      "reference": {
+        "type": "string",
+        "store": "yes",
+        "index": "not_analyzed"
+      },
+      "source": {
+        "type": "string",
+        "store": "yes",
+        "index": "not_analyzed"
+      },
+      "keyword": {
+        "type": "string"
+      }
+    }
+  }
+}

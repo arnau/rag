@@ -1,0 +1,11 @@
+{
+  "@context": "http://api.spoontaneous.net/contexts/bookmarks.jsonld",
+  "@id": "/asiches/bookmarks/a-test",
+  "@type": "Bookmark",
+  "created": "2013-10-30T16:52:02Z",
+  "identifier": "a-test",
+  "language": "eng",
+  "source": "http://esbudellat.org",
+  "keyword": ["test", "prova", "foo", "bar"],
+  "title": "A test"
+}

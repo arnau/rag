@@ -1,0 +1,27 @@
+{
+  "settings" : {
+    "analysis": {
+      "filter": {
+        "en_snow": {
+          "type": "snowball",
+          "language": "English"
+        },
+        "en_stop": {
+          "type": "stop",
+          "ignore_case" : "true",
+          "stopwords": ["_english_"]
+        }
+      },
+      "analyzer": {
+        "default": {
+          "type": "snowball"
+        },
+        "eng": {
+          "tokenizer": "standard",
+          "filter": ["standard", "lowercase", "en_stop", "en_snow"],
+          "char_filter" : ["html_strip"]
+        }
+      }
+    }
+  }
+}
