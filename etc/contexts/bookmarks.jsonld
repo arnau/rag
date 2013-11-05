@@ -22,13 +22,16 @@
     },
     "language": {
       "@id": "dct:language",
-      "@type": "dct:ISO639-2"
+      "@type": "dct:ISO639-1"
     },
     "title": {
       "@id": "dct:title"
     },
     "description": {
       "@id": "dct:description"
+    },
+    "comments": {
+      "@id": "rdfs:comments"
     },
     "format": {
       "@id": "dct:hasFormat",
@@ -42,7 +45,11 @@
       "@id": "dct:source",
       "@type": "@id"
     },
-    "keyword": {
+    "topic": {
+      "@id": "foaf:primaryTopic",
+      "@type": "@id"
+    },
+    "tag": {
       "@id": "dct:subject"
     }
   }

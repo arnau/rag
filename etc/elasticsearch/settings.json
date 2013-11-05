@@ -1,5 +1,5 @@
 {
-  "settings" : {
+  "settings": {
     "analysis": {
       "filter": {
         "en_snow": {
@@ -8,63 +8,103 @@
         },
         "en_stop": {
           "type": "stop",
-          "ignore_case" : "true",
+          "ignore_case": "true",
           "stopwords": ["_english_"]
         }
       },
       "analyzer": {
         "default": {
-          "type": "snowball"
-        },
-        "eng": {
-          "tokenizer": "standard",
-          "filter": ["standard", "lowercase", "en_stop", "en_snow"],
+          "type": "snowball",
+          "tokenizer": "letter",
+          "filter": ["standard", "lowercase", "asciifolding"],
           "char_filter" : ["html_strip"]
+        },
+        "en": {
+          "type": "snowball",
+          "tokenizer": "letter",
+          "filter": ["standard", "lowercase", "asciifolding", "en_stop", "en_snow"],
+          "char_filter" : ["html_strip"]
+        }
+      },
+      "tokenizer": {
+        "url_tokenizer": {
+         "type": "uax_url_email"
+        },
+        "ngram_tokenizer": {
+          "type": "nGram",
+          "min_gram": "1",
+          "max_gram": "50"
         }
       }
     }
   },
-  "bookmarks": {
-    "_analyzer": {
-      "path": "language"
+  "mappings": {
+    "topics": {
+      "properties": {
+        "@context": {
+          "type": "string",
+          "index": "no"
+        },
+        "@id": {
+          "type": "string",
+          "index": "no"
+        },
+        "@type": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "label": {
+          "type": "string",
+          "analyzer": "en"
+        },
+        "definition": {
+          "type": "string",
+          "analyzer": "en"
+        }
+      }
     },
-    "properties": {
-      "@id": {
-        "type": "string",
-        "index": "no"
+    "bookmarks": {
+      "_parent": { "type": "topics" },
+      "_analyzer": {
+        "path": "language"
       },
-      "@type": {
-        "type": "string",
-        "index_name": "type",
-        "store": "yes",
-        "index": "not_analyzed"
-      },
-      "identifier": {
-        "type": "string",
-        "index": "no"
-      },
-      "language": {
-        "type": "string",
-        "store": "yes",
-        "index": "not_analyzed"
-      },
-      "created": {
-        "type": "date"
-      },
-      "reference": {
-        "type": "string",
-        "store": "yes",
-        "index": "not_analyzed"
-      },
-      "source": {
-        "type": "string",
-        "store": "yes",
-        "index": "not_analyzed"
-      },
-      "keyword": {
-        "type": "string"
+      "properties": {
+        "@context": {
+          "type": "string",
+          "index": "no"
+        },
+        "@id": {
+          "type": "string",
+          "index": "no"
+        },
+        "@type": {
+          "type": "string",
+          "index_name": "type",
+          "index": "not_analyzed"
+        },
+        "identifier": {
+          "type": "string",
+          "index": "no"
+        },
+        "language": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "created": {
+          "type": "date"
+        },
+        "reference": {
+          "type": "string",
+          "analyzer": "stop"
+        },
+        "source": {
+          "type": "string",
+          "analyzer": "stop"
+        },
+        "tag": {
+          "type": "string"
+        }
       }
     }
   }
-}
 }

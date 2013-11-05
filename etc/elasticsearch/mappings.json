@@ -28,16 +28,15 @@
       },
       "reference": {
         "type": "string",
-        "store": "yes",
-        "index": "not_analyzed"
+        "analyzer": "stop"
       },
       "source": {
         "type": "string",
-        "store": "yes",
-        "index": "not_analyzed"
+        "index_analyzer": "stop"
       },
       "keyword": {
-        "type": "string"
+        "type": "string",
+        "analyzer": "eng"
       }
     }
   }

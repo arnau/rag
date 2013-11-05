@@ -4,8 +4,10 @@
   "@type": "Bookmark",
   "created": "2013-10-30T16:52:02Z",
   "identifier": "a-test",
-  "language": "eng",
+  "language": "en",
   "source": "http://esbudellat.org",
-  "keyword": ["test", "prova", "foo", "bar"],
+  "topic": "/asiches/topics/git",
+  "tag": ["test", "prova", "foo", "bar"],
+  "reference": ["http://vim.org"],
   "title": "A test"
 }
