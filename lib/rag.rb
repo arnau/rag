@@ -2,6 +2,7 @@
 
 require 'json'
 require 'pathname'
+require 'tempfile'
 
 require 'bundler'
 Bundler.require

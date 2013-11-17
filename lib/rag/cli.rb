@@ -20,47 +20,76 @@ module Rag
         '@context' => 'http://api.spoontaneous.net/contexts/bookmarks.jsonld',
         '@type' => 'Bookmark',
         'source' => uri,
-        'created' => Time.now.getutc.to_datetime.iso8601.to_s
+        'created' => Time.now.getutc.to_datetime.iso8601.to_s,
+        'title' => '',
+        'topic' => '',
+        'language' => '',
+        'description' => '',
+        'tag' => [],
+        'reference' => [],
+        'comments' => '',
       }
 
-      loop do
-        resource['title'] = ask('Title*: ')
-        break unless resource['title'].empty?
-      end
-      loop do
-        resource['topic'] = ask('Topic*: ')
-        break unless resource['topic'].empty?
-      end
-      resource['language'] = ask('Language: ', :limited_to => ['en', 'ca', 'es'])
+      tf = Tempfile.new(['rag', '.json'])
+      begin
+        tf.puts "// Required"
+        tf.puts "// * title"
+        tf.puts "// * language (en|ca|es)"
+        tf.puts JSON.pretty_generate(resource)
+        tf.open
+        system "$EDITOR #{tf.path}"
+        tf.open
+        resource = JSON.parse(tf.read)
 
-      resource['identifier'] = resource['title'].downcase.gsub(/\s/, '-')
-      resource['@id'] = URI.escape("/asiches/bookmarks/#{resource['identifier']}")
-
-      url = "http://localhost:9200/#{resource['@id']}?parent=#{resource['topic']}"
-      resource['topic'] = URI.escape("/asiches/topics/#{resource['topic']}")
-
-      resource['description'] = ask('Description: ')
-      resource['comment'] = ask('Comment: ')
-      resource['tag'] = ask('Tags: ').split(',').map { |i| i.strip }
-      resource['reference'] = [ask('Reference: ')]
-      if resource['reference'].first.empty?
-        resource.delete('reference')
-      else
         loop do
-          answer = ask('more references?')
-          break if answer.empty? or answer == 'no'
-          resource['reference'].push(answer)
+          break unless resource['title'].empty?
+          resource['title'] = ask('Title*: ')
         end
+        loop do
+          break unless resource['topic'].empty?
+          resource['topic'] = ask('Topic*: ')
+        end
+        languages = ['en', 'ca', 'es']
+        unless languages.any? { |l| l == resource['language'] }
+          resource['language'] = ask('Language: ', :limited_to => ['en', 'ca', 'es'])
+        end
+
+      #resource['identifier'] = resource['title'].downcase.gsub(/\s/, '-')
+      #resource['@id'] = URI.escape("/asiches/bookmarks/#{resource['identifier']}")
+
+      #url = "http://localhost:9200/#{resource['@id']}?parent=#{resource['topic']}"
+      #resource['topic'] = URI.escape("/asiches/topics/#{resource['topic']}")
+
+      #resource['description'] = ask('Description: ')
+      #resource['comment'] = ask('Comment: ')
+      #resource['tag'] = ask('Tags: ').split(',').map { |i| i.strip }
+      #resource['reference'] = [ask('Reference: ')]
+      #if resource['reference'].first.empty?
+        #resource.delete('reference')
+      #else
+        #loop do
+          #answer = ask('more references?')
+          #break if answer.empty? or answer == 'no'
+          #resource['reference'].push(answer)
+        #end
+      #end
+
+
+      ensure
+        tf.close
+        tf.unlink
       end
+
+
       resource.reject! { |k, v| v.empty? }
       say JSON.generate(resource), :green
 
 
-      RestClient.get(url) do |response, request, result, &block|
-        if response.code == 404
-          put = RestClient.put(url, resource.to_json)
-        end
-      end
+      #RestClient.get(url) do |response, request, result, &block|
+        #if response.code == 404
+          #put = RestClient.put(url, resource.to_json)
+        #end
+      #end
     end
 
     desc 'search', 'foo'
@@ -82,6 +111,10 @@ module Rag
         wildcard: {
           query: {
             query_string: {
+              # query: "source:blogspot AND git"
+              # defaults to _all but because I'm not able to match the analyzed source URI
+              # through that metafield I'm forcing a multifield query.
+              fields: ['source', 'resource', '_all'],
               query: query,
               analyze_wildcard: true
             }

@@ -2,6 +2,24 @@
   "settings": {
     "analysis": {
       "filter": {
+        "es_snow": {
+          "type": "snowball",
+          "language": "Spanish"
+        },
+        "es_stop": {
+          "type": "stop",
+          "ignore_case": "true",
+          "stopwords": ["_spanish_"]
+        },
+        "ca_snow": {
+          "type": "snowball",
+          "language": "Catalan"
+        },
+        "ca_stop": {
+          "type": "stop",
+          "ignore_case": "true",
+          "stopwords": ["_catalan_"]
+        },
         "en_snow": {
           "type": "snowball",
           "language": "English"
@@ -19,6 +37,23 @@
           "filter": ["standard", "lowercase", "asciifolding"],
           "char_filter" : ["html_strip"]
         },
+        "url": {
+          "type": "stop",
+          "tokenizer": "standard",
+          "filter": ["standard", "en_stop", "en_snow"]
+        },
+        "es": {
+          "type": "snowball",
+          "tokenizer": "letter",
+          "filter": ["standard", "lowercase", "asciifolding", "es_stop", "es_snow"],
+          "char_filter" : ["html_strip"]
+        },
+        "ca": {
+          "type": "snowball",
+          "tokenizer": "letter",
+          "filter": ["standard", "lowercase", "asciifolding", "ca_stop", "ca_snow"],
+          "char_filter" : ["html_strip"]
+        },
         "en": {
           "type": "snowball",
           "tokenizer": "letter",
@@ -27,9 +62,6 @@
         }
       },
       "tokenizer": {
-        "url_tokenizer": {
-         "type": "uax_url_email"
-        },
         "ngram_tokenizer": {
           "type": "nGram",
           "min_gram": "1",
@@ -99,7 +131,7 @@
         },
         "source": {
           "type": "string",
-          "analyzer": "stop"
+          "analyzer": "url"
         },
         "tag": {
           "type": "string"
