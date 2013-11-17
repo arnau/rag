@@ -2,7 +2,7 @@
 # encoding: UTF-8
 
 # this shit is gonna bit me :(
-$:.unshift File.expand_path('/var/kitchen/bookmarks/lib')
+$:.unshift File.expand_path('/var/kitchen/rag/lib')
 #$:.unshift File.expand_path(File.join File.dirname(__FILE__), '..', 'lib')
 
 require 'rag'
